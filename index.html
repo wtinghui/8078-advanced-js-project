@@ -39,11 +39,11 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="bookEntry">
+                            <form id="bookEntry" autocomplete="off">
                                 <div class="mb-2 form-group row">
-                                    <label for="title" class="col-sm-3 col-form-label">Book title:</label>
+                                    <label for="title" class="col-sm-3 col-form-label">Book title:*</label>
                                     <div class="col-sm-9">
-                                        <textarea type="text" id="title" class="form-control"></textarea>
+                                        <textarea type="text" id="title" class="form-control" required></textarea>
                                     </div>
                                 </div>
 
@@ -62,9 +62,10 @@
                                 </div>
 
                                 <div class="mb-2 form-group row">
-                                    <label for="status" class="col-sm-3 col-form-label">Status:</label>
+                                    <label for="status" class="col-sm-3 col-form-label">Status:*</label>
                                     <div class="col-sm-9">
-                                        <select id="status" class="form-select">
+                                        <select id="status" class="form-select" required>
+                                            <option value="">-- Please choose an option --</option>
                                             <option value="To read">To read</option>
                                             <option value="Reading">Reading</option>
                                             <option value="Completed">Completed</option>
@@ -72,12 +73,12 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-2 form-group row">
+                                <div class="mb-2 form-group row" id="ratings-field">
                                     <label for="ratingsBar" class="col-sm-3 col-form-label">Ratings:</label>
-                                    <div class="col-sm-9" id="ratingsBar">
+                                    <div class="col-sm-9">
                                         <!-- <input type="number" id="ratings" min="0" max="5" step="0.5"
                                             class="form-control"> -->
-                                        <input type="radio" name="starRatings" value="1" id="star1">
+                                        <input type="radio" name="stars-radio" value="1" id="star1">
                                         <label for="star1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                                 class="bi bi-star-fill star" fill="lightGrey" viewBox="0 0 16 16"
@@ -88,7 +89,7 @@
                                         </label>
 
 
-                                        <input type="radio" name="starRatings" value="2" id="star2">
+                                        <input type="radio" name="stars-radio" value="2" id="star2">
                                         <label for="star2">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                                 class="bi bi-star-fill star" fill="lightGrey" viewBox="0 0 16 16"
@@ -99,7 +100,7 @@
                                         </label>
 
 
-                                        <input type="radio" name="starRatings" value="3" id="star3">
+                                        <input type="radio" name="stars-radio" value="3" id="star3">
                                         <label for="star3">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                                 class="bi bi-star-fill star" fill="lightGrey" viewBox="0 0 16 16"
@@ -110,7 +111,7 @@
                                         </label>
 
 
-                                        <input type="radio" name="starRatings" value="4" id="star4">
+                                        <input type="radio" name="stars-radio" value="4" id="star4">
                                         <label for="star4">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                                 class="bi bi-star-fill star" viewBox="0 0 16 16" id="star4-svg">
@@ -120,7 +121,7 @@
                                         </label>
 
 
-                                        <input type="radio" name="starRatings" value="5" id="star5">
+                                        <input type="radio" name="stars-radio" value="5" id="star5">
                                         <label for="star5">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                                 class="bi bi-star-fill star" fill="lightGrey" viewBox="0 0 16 16"
@@ -162,6 +163,8 @@
     <!--axios-->
     <script src="https://cdn.jsdelivr.net/npm/axios@1.12.2/dist/axios.min.js"></script>
 
+
+    <script src="view.js"></script>
     <script src="data.js"></script>
     <script src="script.js"></script>
 </body>

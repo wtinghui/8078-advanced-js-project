@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const books = await loadData();
     const cards = document.querySelector("#cards");
     const addBookEntry = document.querySelector("#addBookEntry");
-    const addBtn = document.querySelector("#addBtn");
     const form = document.querySelector("#bookEntry");
     const modalHeader = document.querySelector("#modalLabel");
     const modalBtn = document.querySelector("#modalBtn");
@@ -10,132 +9,106 @@ document.addEventListener("DOMContentLoaded", async function () {
     const author = document.querySelector("#author");
     const genre = document.querySelector("#genre");
     const status = document.querySelector("#status");
-    const ratings = document.querySelector("#ratings");
-    const ratingsBar=document.querySelector("#ratingsBar");
-    const stars=document.querySelectorAll(".star");
+    const stars = document.querySelectorAll(".star");
+    const ratingsField = document.querySelector("#ratings-field");
 
-    console.log(stars);
 
     renderList(books);
 
-    addBookEntry.addEventListener("click", function () {
-        modalHeader.innerText = "Add new book";
-        modalBtn.innerText = "Add";
-        form.reset();
-
-        modalBtn.addEventListener("click",function(){
-            const titleValue = title?.value;
-            const authorValue = author?.value;
-            const genreValue = genre?.value;
-            const statusValue = status?.value;
-            const ratingsValue = (statusValue == "Completed") ? ratings?.value : "";
-
-            addBook(books, titleValue, authorValue, genreValue, statusValue, ratingsValue);
-            renderList(books);
-
-        })
-
-    })
-
-    // ratingsBar.addEventListener("mouseenter",function(event){
-    //     event.stopPropagation();
-    //     console.log("mouseover")
-    //     event.target.firstElementChild.classList.add("hover")
-    // })
-
-    // ratingsBar.addEventListener("mouseout",function(event){
-    //     event.stopPropagation();
-    //     console.log("mouseleave");
-    //     event.target.firstElementChild.classList.remove("hover")
-    // })
-
-    stars.forEach(function(star,index){
-        star.addEventListener("mouseover",function(){
-            stars.forEach(function(s,i){
-                (i<=index)?s.classList.add("hover"):s.classList.add("not-hover")
-                console.log(s.id, s.classList)
+    //Interactive rating
+    stars.forEach(function (star, index) {
+        star.addEventListener("mouseover", function () {
+            stars.forEach(function (s, i) {
+                (i <= index) ? s.classList.add("hover") : s.classList.add("not-hover")
             })
         })
 
-        star.addEventListener("mouseout",function(){
-            stars.forEach(function(s){
-               if (s.classList.contains("hover")){
+        star.addEventListener("mouseout", function () {
+            stars.forEach(function (s) {
+                if (s.classList.contains("hover")) {
                     s.classList.remove("hover")
-                    }
-                if (s.classList.contains("not-hover")){
+                }
+                if (s.classList.contains("not-hover")) {
                     s.classList.remove("not-hover")
-                    }
-                console.log(s.id, s.classList)
+                }
             })
         })
 
-        star.addEventListener("click",function(event){
-            stars.forEach(function(s,i){
-                if (s.classList.contains("selected")){
+        star.addEventListener("click", function (event) {
+            event.stopPropagation();
+
+            stars.forEach(function (s, i) {
+
+                if (s.classList.contains("selected")) {
                     s.classList.remove("selected")
-                    }
-                if (s.classList.contains("not-selected")){
+                }
+                if (s.classList.contains("not-selected")) {
                     s.classList.remove("not-selected")
-                    }
-                (i<=index)?s.classList.add("selected"):s.classList.add("not-selected")
-                console.log(s.id, s.classList)
+                }
+                (i <= index) ? s.classList.add("selected") : s.classList.add("not-selected")
+
             })
         })
     })
 
-    // stars.forEach(function(star,index){
-    //     // star.addEventListener("mouseout",function(event){
-    //     //     stars.forEach(function(s,i){
-    //     //         s.style.fill(i<=index)?"grey":"lightGrey"
-    //     //         (i<=index)?s.classList.remove("hover"):""
-    //     //     })
-    //     // })
+    //Display rating function if reading status is completed
+    status.addEventListener("change", function () {
+        ratingsField.style.display = (status.value == "Completed") ? "flex" : "none"
+    })
 
-    //     star.addEventListener("mouseover",function(){
-    //         console.log(`mouse enter ${star.id}`)
-    //         stars.forEach(function(s,i){
-    //             console.log(s);
-    //             console.log(i, index, `${(i<=index)}`);
-    //             s.style.fill=(i<=index)?"grey":"lightGrey"
-    //         })
-    //     })
-    //     // s
-    //     star.addEventListener("click",function(event){
-    //         stars.forEach(function(s,i){
-    //             s.style.fill=(i<=index)?"orange":"lightGrey"
-    //         })
-    //     })
-    // })
-    
-    
-    cards.addEventListener("mouseover", function (event) {
+
+    //Buttons
+    //for adding new entry
+    addBookEntry.addEventListener("click", function () {
+        //reset form to default
+        defaultForm(form, stars);
+        //change text in modal header and button
+        addModal(modalHeader, modalBtn, ratingsField);
+    })
+
+    //for edit and delete
+    cards.addEventListener("click", function (event) {
         const index = parseInt(event.target.dataset.index);
         if (event.target.dataset.action == "edit") {
             const book = books[index];
-
-            form.reset();
-            modalHeader.innerText = "Edit book entry";
-            modalBtn.innerText = "Save";
-
-            title.value = book.title;
-            author.value = book.author;
-            genre.value = book.genre;
-            status.value = book.status;
-            ratings.value = book.ratings;
-
-            modalBtn.addEventListener("click",function(){
-                editBook(books,index,title.value,author.value,genre.value,status.value,ratings.value);
-                renderList(books);
-
-            })
+            defaultForm(form, stars);
+            editModal(modalHeader, modalBtn, book, title, author, genre, status, stars, ratingsField);
+            editIndex = index
         }
-        if (event.target.dataset.action=="delete"){
-            deleteBook(books,index);
+
+        if (event.target.dataset.action == "delete") {
+            deleteBook(books, index);
             renderList(books);
         }
     });
 
+    //within modal: for add or save
+    modalBtn.addEventListener("click", function (event) {
+        const titleValue = title?.value;
+        const authorValue = author?.value;
+        const genreValue = genre?.value;
+        const statusValue = status?.value;
+        const ratingsValue = (statusValue == "Completed") ? document.querySelector("input[name='stars-radio']:checked")?.value : "";
 
+        if (modalBtn.innerText == "Save") {
+            editBook(books, editIndex, titleValue, authorValue, genreValue, statusValue, ratingsValue);
+            renderList(books);
+        }
+        if (modalBtn.innerText == "Add") {
+            if (title.value && status.value) {
+                addBook(books, titleValue, authorValue, genreValue, statusValue, ratingsValue);
+                renderList(books);
+            } else {
+                if (!title.value && !status.value ){
+                    alert("Entry not added. Missing information for book title and reading status.")
+                } else if (!title.value){
+                    alert("Entry not added. Missing information for book title")
+                } else{
+                    alert("Entry not added. Missing information for reading status")
+                }
+                
+            }
+        }
+    })
 
-
-});
+})
