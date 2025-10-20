@@ -1,0 +1,36 @@
+input[type="radio"]{
+    opacity:0;
+    width:0;
+    height:0;
+}
+
+.star{
+    fill:lightgrey;
+}
+
+.selected{
+    fill:orange;
+}
+
+.not-selected{
+    fill:lightgrey;
+}
+
+.hover{
+    fill: grey;
+}
+
+.not-hover{
+    fill:lightGrey;
+
+}
+
+
+
+
+
+
+
+
+
+
