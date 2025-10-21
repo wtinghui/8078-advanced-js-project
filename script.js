@@ -91,8 +91,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         const ratingsValue = (statusValue == "Completed") ? document.querySelector("input[name='stars-radio']:checked")?.value : "";
 
         if (modalBtn.innerText == "Save") {
-            editBook(books, editIndex, titleValue, authorValue, genreValue, statusValue, ratingsValue);
-            renderList(books);
+            if (title.value && status.value) {
+                editBook(books, editIndex, titleValue, authorValue, genreValue, statusValue, ratingsValue);
+                renderList(books);
+            } else {
+                if (!title.value && !status.value ){
+                    alert("Entry not added. Missing information for book title and reading status.")
+                } else if (!title.value){
+                    alert("Entry not added. Missing information for book title")
+                } else{
+                    alert("Entry not added. Missing information for reading status")
+                }
+            }
         }
         if (modalBtn.innerText == "Add") {
             if (title.value && status.value) {
@@ -106,7 +116,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 } else{
                     alert("Entry not added. Missing information for reading status")
                 }
-                
             }
         }
     })

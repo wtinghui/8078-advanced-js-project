@@ -51,6 +51,7 @@ function renderList(books) {
 //reset form to default: empty field
 function defaultForm(form, stars) {
     form.reset();
+    
     stars.forEach(function (star) {
         if (star.classList.contains("selected")) {
             star.classList.remove("selected")
@@ -59,14 +60,6 @@ function defaultForm(form, stars) {
             star.classList.remove("not-selected")
         }
     })
-}
-
-function formValidation(author,status){
-    if (author.value && status.value){
-        return
-    }else{
-        alert("Please fill in name of book and reading status.")
-    }
 }
 
 function addModal(modalHeader, modalBtn, ratingsField) {
@@ -89,6 +82,11 @@ function editModal(modalHeader, modalBtn, book, title, author, genre, status, st
     } else {
         ratingsField.style.display="flex"
         ratingsValue = book.ratings;
+
+        const selectedRadio=document.querySelector(`#star${ratingsValue}`);
+        console.log(selectedRadio);
+        selectedRadio.checked=true;
+        
 
         stars.forEach(function (s, i) {
             (i <= ratingsValue - 1) ? s.classList.add("selected") : s.classList.add("not-selected")

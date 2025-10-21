@@ -1,6 +1,12 @@
-/* #ratings-field{
-    display:none;
-} */
+.h1{
+    marign:10px;
+}
+
+
+
+.card{
+    margin:10px;
+}
 
 input[type="radio"]{
     opacity:0;
